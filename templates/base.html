@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+<head>
+	<title>Todo app</title>
+	<!--
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+	-->
+	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+</head>
+<body>
+	<div class = "container">
+		<form class = "nav" action="/dodaj" method ="POST">
+			<h2 class="threeD">TODO LIST</h2>
+			<div class = "user-input">
+				<input id="input" type="text" name="title" placeholder="Add task...">
+				<button type="submit">+</button>
+			</div>
+		</form>
+	</div>
+	<div class = "container">
+		<div class = "to-do-items">
+			{% for todo in todo_list %}
+			<div class = "item">
+				<p class = "opis"> {{ todo.id }} | {{ todo.title }} </p>
+				<div class="content">
+					{% if todo.complete == False %}
+						<span class ="nieukonczone"> Undone</span>
+					{% else %}
+						<span class ="ukonczone"> Done </span>
+					{% endif %}
+
+					<a class ="zrobione" href= "/zrobione/{{ todo.id}}"><i class="uil uil-check check-icon"></i> </a>
+					<a class ="usun" href= "/usun/{{ todo.id}}"> <i class="uil uil-trash-alt bin-icon"></i> </a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	
+
+</body>
+<style>
+	
+	*{
+		padding: 0;
+		margin: 0;
+		box-sizing: border-box;
+	}
+
+	body{
+		background-image: linear-gradient(to right, #7bdaff, #008ab1);
+		color: #fff;
+		
+	}
+
+	.threeD {
+		
+		color: rgb(255, 255, 255);
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 3em;
+		font-family: sans-serif;
+		letter-spacing: 0.1em;
+		transition: 0.3s;
+		text-shadow: 1px 1px 0 grey, 1px 2px 0 grey, 1px 3px 0 grey, 1px 4px 0 grey,
+			1px 5px 0 grey, 1px 6px 0 grey, 1px 7px 0 grey, 1px 8px 0 grey,
+			5px 13px 15px black;
+		}
+
+	.threeD:hover {
+		transition: 0.3s;
+		transform: scale(1.1) translate(-50%, -50%);
+		text-shadow: 1px -1px 0 grey, 1px -2px 0 grey, 1px -3px 0 grey,
+			1px -4px 0 grey, 1px -5px 0 grey, 1px -6px 0 grey, 1px -7px 0 grey,
+			1px -8px 0 grey, 5px -13px 15px black, 5px -13px 25px #808080;
+	}
+
+	.container{
+		width: 95%;
+		
+		margin: auto;
+		
+	}
+	
+	.nav{
+		align-items: center;
+		flex-direction: column;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		width: 100%;
+		margin: 25px 0;
+	}
+
+	.nav h2{
+		font-size: 2rem;
+		margin-top: 20px;
+		margin-left: 150px;
+
+	}
+
+	.user-input{
+		float: left;
+		text-align: left;
+		width: 350px;
+	}
+
+	.user-input input{
+		width: 80%;
+		outline: none;
+		padding: 8px;
+		border: 1px solid lightgray;
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+	}
+
+	.user-input input:focus{
+		box-shadow: 0 0 5px #253d8a;
+		border: 1px solid #253d8a;
+	}
+
+	.user-input button{
+		cursor: pointer;
+		padding: 8px;
+		width: fit-content;
+		transition: 1s;
+		outline: none;
+		background-color: lightgray;
+		border: 1px solid lightgray;
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+
+	.user-input button:hover{
+		background-color: transparent;
+		color: white;
+	}
+
+	.to-do-items{
+		width: 500px;
+		margin: auto;
+	}
+
+	.item{
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		height: auto;
+		border-radius: 2px;
+		padding: 16px;
+		color: #454545;
+		margin-top: 10px;
+		font-size: 1rem;
+		background-color: white;
+		transition: all .2s ease-in-out; 
+	}
+	
+	.item:hover{
+		box-shadow: 0 0 5px #253d8a;
+		border: 1px solid #253d8a;
+		transform: scale(1.05);
+		
+	}
+
+	
+
+	.content{
+		margin-top: auto;
+		margin-bottom: auto;
+	}
+
+	.opis{
+		
+		width: 50%;
+		margin-top: auto;
+		margin-bottom: auto;
+		color: black;
+		font-family:'Courier New', Courier, monospace;
+		font-weight: bold;
+	}
+
+	.usun, .zrobione{
+		background-color: white;
+		padding: 5px;
+		position: static;
+		text-decoration: none;
+		
+	}
+
+	.nieukonczone, .ukonczone{
+		padding: 7px;
+		border-radius: 5px;
+		position: static;
+		margin-right: 5px;
+		color: black;
+
+	}
+	
+
+	.nieukonczone{
+		background-color: rgb(30, 154, 255);
+
+		font-family:'Segoe UI', Tahoma, Verdana, sans-serif
+	}
+
+	.ukonczone{
+		background-color: rgb(125, 255, 125);
+	
+		font-family:'Segoe UI', Tahoma, Verdana, sans-serif
+	}
+
+	.bin-icon{
+		color: red;
+		font-size: 1.5rem;
+		transition: .5s;
+	}
+
+	.check-icon{
+		color: rgb(29, 121, 29);
+		font-size: 2rem;
+		transition: .5s;
+	}
+
+	.bin-icon:hover{
+		color: rgb(255, 121, 121);
+	}
+
+	.check-icon:hover{
+		
+		color: rgb(32, 211, 32);
+	}
+	
+
+	@media(max-width: 768px){
+		.user-inupt{
+			width:100%;
+		}
+
+		.to-do-items{
+			width: 100%;
+		}
+	}
+
+	@media(max-width: 480px){
+		.user-input input{
+			width: 74%;
+		}
+	}
+
+	@media(max-width: 320px){
+		.user-input input{
+			width: 60%;
+		}
+	}
+</style>
+</html>
